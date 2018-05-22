@@ -36,11 +36,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadFragment(type : String) {
-
         val fragment  = when (type) {
             Constants.TAG_LABEL -> LabelImageFragment()
             Constants.TAG_TEXT -> TextRecognitionFragment()
-            Constants.TAG_FACE -> ContentFragment.get("one")
+            Constants.TAG_FACE -> FaceDetectionFragment()
             else -> loadFragment("two")
         }
         val fragmentTransaction = supportFragmentManager.beginTransaction()
