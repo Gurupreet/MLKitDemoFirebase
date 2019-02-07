@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MainFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Label ML Demo"
+            android:textStyle="bold"
+            android:padding="10dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/label_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="320dp">
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Text recoginition ML Demo"
+            android:textStyle="bold"
+            android:padding="10dp"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/text_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Face recoginition ML Demo"
+            android:textStyle="bold"
+            android:padding="10dp"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/face_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"/>
+
+    </LinearLayout>
+    </ScrollView>
+</FrameLayout>

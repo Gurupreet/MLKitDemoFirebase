@@ -2,17 +2,12 @@ package com.guru.mlkitdemofirebase
 
 import android.app.Application
 import android.content.Context
+import com.google.firebase.FirebaseApp
 
 class App : Application() {
 
-    companion object {
-        lateinit var appContext: Context
-
-        fun get(): App = appContext as App
-    }
-
     override fun onCreate() {
         super.onCreate()
-        //initFirebase()
+        FirebaseApp.initializeApp(this)
     }
 }

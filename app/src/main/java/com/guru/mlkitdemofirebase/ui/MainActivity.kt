@@ -1,16 +1,23 @@
-package com.guru.mlkitdemofirebase
+package com.guru.mlkitdemofirebase.ui
 
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import com.google.firebase.FirebaseApp
+import com.guru.mlkitdemofirebase.R
+import com.guru.mlkitdemofirebase.utill.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    var TAG = Constants.TAG_LABEL
+    private var TAG = Constants.TAG_LABEL
+    private var handler : Handler? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         setContentView(R.layout.activity_main)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        handler = Handler()
         loadFragment(TAG)
     }
 
@@ -21,8 +28,8 @@ class MainActivity : AppCompatActivity() {
                 loadFragment(TAG)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_text -> {
-                TAG = Constants.TAG_TEXT
+            R.id.navigation_test -> {
+                TAG = Constants.TAG_TEST
                 loadFragment(TAG)
                 return@OnNavigationItemSelectedListener true
             }
@@ -37,13 +44,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadFragment(type : String) {
         val fragment  = when (type) {
-            Constants.TAG_LABEL -> LabelImageFragment()
-            Constants.TAG_TEXT -> TextRecognitionFragment()
-            Constants.TAG_FACE -> FaceDetectionFragment()
-            else -> loadFragment("two")
+            Constants.TAG_LABEL -> MainFragment()
+            Constants.TAG_TEST -> TestFragment()
+            Constants.TAG_FACE -> TestFragment()
+            else -> loadFragment(Constants.TAG_LABEL)
         }
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.containerView, fragment as android.support.v4.app.Fragment)
-        fragmentTransaction.commit()
+        handler?.post({
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.containerView, fragment as android.support.v4.app.Fragment)
+            fragmentTransaction.commit()
+        })
+
     }
 }

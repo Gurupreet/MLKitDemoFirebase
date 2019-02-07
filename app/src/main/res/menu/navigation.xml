@@ -7,13 +7,13 @@
         android:title="@string/title_label" />
 
     <item
-        android:id="@+id/navigation_text"
+        android:id="@+id/navigation_test"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_text" />
+        android:title="@string/title_test" />
 
     <item
         android:id="@+id/navigation_face"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_face" />
+        android:title="@string/title_models" />
 
 </menu>

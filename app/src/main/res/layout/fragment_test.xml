@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.TestFragment">
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <Button
+           android:id="@+id/upload"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:drawableLeft="@drawable/ic_home_black_24dp"
+           android:text="gallery"
+           android:layout_alignParentTop="true"
+           android:layout_alignParentLeft="true"
+           android:padding="10dp"
+           android:drawablePadding="10dp"
+           android:textColor="@color/colorPrimary"
+           android:background="@color/colorAccent"
+           />
+       <Button
+           android:id="@+id/camera"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="camera"
+           android:layout_alignParentTop="true"
+           android:layout_alignParentRight="true"
+           android:drawableLeft="@drawable/ic_home_black_24dp"
+           android:padding="10dp"
+           android:drawablePadding="10dp"
+           android:textColor="@color/colorPrimary"
+           android:background="@color/colorAccent"
+           />
+
+       <ImageView
+           android:id="@+id/test_image"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_above="@+id/bottom_buttons"
+           android:layout_margin="10dp"
+           android:layout_below="@+id/upload"
+           android:scaleType="fitCenter"
+           android:src="@drawable/breads"
+           />
+       <TextView
+           android:id="@+id/result_text"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text=""
+           android:visibility="gone"
+           android:background="@color/colorAccent"
+           android:textColor="@color/colorPrimary"
+           android:alpha="0.5"
+           android:padding="20dp"
+           android:layout_marginLeft="10dp"
+           android:layout_marginRight="10dp"
+           android:layout_alignBottom="@id/test_image"
+           />
+       <LinearLayout
+           android:id="@+id/bottom_buttons"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentBottom="true"
+           android:orientation="horizontal">
+           <Button
+               android:id="@+id/test_label"
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:background="@color/colorAccent"
+               android:text="Run Image detection"
+               android:textColor="@color/colorPrimary"
+               android:layout_margin="5dp"
+               android:layout_height="wrap_content" />
+           <Button
+               android:id="@+id/test_text"
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:background="@color/colorAccent"
+               android:text="Run Text detection"
+               android:textColor="@color/colorPrimary"
+               android:layout_margin="5dp"
+               android:layout_height="wrap_content" />
+           <Button
+               android:id="@+id/test_face"
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:background="@color/colorAccent"
+               android:text="Run Face detection"
+               android:textColor="@color/colorPrimary"
+               android:layout_margin="5dp"
+               android:layout_height="wrap_content" />
+       </LinearLayout>
+   </RelativeLayout>
+
+</FrameLayout>

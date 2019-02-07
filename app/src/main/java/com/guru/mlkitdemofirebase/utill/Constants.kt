@@ -1,4 +1,4 @@
-package com.guru.mlkitdemofirebase
+package com.guru.mlkitdemofirebase.utill
 
 class Constants {
     companion object {
@@ -7,5 +7,6 @@ class Constants {
         const val TAG_FACE = "face"
         const val TAG_BARCODE = "barcode"
         const val TAG_LANDMARK = "landmark"
+        const val TAG_TEST = "test"
      }
 }

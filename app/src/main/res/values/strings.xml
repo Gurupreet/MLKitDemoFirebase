@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">MLKitDemoFirebase</string>
-    <string name="title_label">Label</string>
-    <string name="title_text">Text</string>
-    <string name="title_face">Face</string>
+    <string name="title_label">Samples</string>
+    <string name="title_test">Test</string>
+    <string name="title_models">Models</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
