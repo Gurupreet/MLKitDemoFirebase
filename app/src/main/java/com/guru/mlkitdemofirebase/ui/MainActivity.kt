@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_face -> {
-                TAG = Constants.TAG_FACE
+                TAG = Constants.TAG_CUSTOME
                 loadFragment(TAG)
                 return@OnNavigationItemSelectedListener true
             }
@@ -46,14 +46,13 @@ class MainActivity : AppCompatActivity() {
         val fragment  = when (type) {
             Constants.TAG_LABEL -> MainFragment()
             Constants.TAG_TEST -> TestFragment()
-            Constants.TAG_FACE -> TestFragment()
+            Constants.TAG_CUSTOME -> CustomModelsFragment()
             else -> loadFragment(Constants.TAG_LABEL)
         }
-        handler?.post({
+        handler?.post {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.containerView, fragment as android.support.v4.app.Fragment)
             fragmentTransaction.commit()
-        })
-
+        }
     }
 }

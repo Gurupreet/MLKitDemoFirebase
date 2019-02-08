@@ -39,8 +39,8 @@ class HorizontalRecyclerAdapter(val mList: ArrayList<Any>, val mContext: Context
             itemView.recy_title?.text = item.text
             itemView.recy_image?.setImageResource(item.id)
             val visionImage: FirebaseVisionImage = FirebaseVisionImage.fromBitmap((itemView.recy_image?.drawable as BitmapDrawable).bitmap)
-            if (type == Constants.TAG_LABEL) {
-                MLManager.get().detectLabel(visionImage, object : MLResponseListener {
+            when (type) {
+                Constants.TAG_LABEL -> MLManager.get().detectLabel(visionImage, object : MLResponseListener {
                     override fun onSuccess(result: Any, type: String) {
                         val list = result as List<FirebaseVisionLabel>
                         itemView.recy_title?.text = ""
@@ -55,12 +55,12 @@ class HorizontalRecyclerAdapter(val mList: ArrayList<Any>, val mContext: Context
 
                     }
                 })
-            } else if (type == Constants.TAG_TEXT) {
-                MLManager.get().detectText(visionImage, object : MLResponseListener {
+                Constants.TAG_TEXT -> MLManager.get().detectText(visionImage, object : MLResponseListener {
                     override fun onSuccess(result: Any, type: String) {
                         val item = result as FirebaseVisionText
+
                         itemView.recy_title?.text = ""
-                        item.blocks.forEach {
+                        item.textBlocks.forEach {
                             itemView.recy_title?.append(it.text + " ")
                         }
                         if (itemView.recy_title?.text!!.isEmpty()) {
@@ -69,11 +69,10 @@ class HorizontalRecyclerAdapter(val mList: ArrayList<Any>, val mContext: Context
                     }
 
                     override fun onFailure(error: String) {
-                        itemView.recy_title?.text = "ML Failed to detect"
+                        itemView.recy_title?.text = error
                     }
                 })
-            } else if (type == Constants.TAG_FACE) {
-                MLManager.get().detectFace(visionImage, object : MLResponseListener {
+                Constants.TAG_FACE -> MLManager.get().detectFace(visionImage, object : MLResponseListener {
                     override fun onSuccess(result: Any, type: String) {
                         val list = result as List<FirebaseVisionFace>
                         itemView.recy_title?.text = ""

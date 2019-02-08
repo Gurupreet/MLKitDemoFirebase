@@ -11,6 +11,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.face.FirebaseVisionFace
 import com.google.firebase.ml.vision.label.FirebaseVisionLabel
 import com.google.firebase.ml.vision.text.FirebaseVisionText
+import com.guru.mlkitdemofirebase.BuildConfig
 import com.guru.mlkitdemofirebase.data.MLManager
 import com.guru.mlkitdemofirebase.data.MLResponseListener
 import com.guru.mlkitdemofirebase.R
@@ -82,7 +84,7 @@ class TestFragment : Fragment() {
                 override fun onSuccess(result: Any, type: String) {
                     val item = result as FirebaseVisionText
                     result_text?.text = ""
-                    item.blocks.forEach {
+                    item.textBlocks.forEach {
                         result_text?.append(it.text + " ")
                     }
                 }
@@ -154,12 +156,12 @@ class TestFragment : Fragment() {
     }
 
     private fun openCamera() {
-        var photoFile: File? = null
         try {
-            photoFile = createImageFile()
-            cameraUri = Uri.fromFile(photoFile)
-        } catch (ex: IOException) {
-        }
+            cameraUri =   FileProvider.getUriForFile(context!!,
+                    BuildConfig.APPLICATION_ID + ".provider",
+                    createImageFile())
+
+        } catch (ex: IOException) { }
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                 cameraUri)
@@ -173,8 +175,6 @@ class TestFragment : Fragment() {
         val imageFileName = "JPEG_" + timeStamp + "_"
         val storageDir = activity!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
-        // Save a file: path for use with ACTION_VIEW intents
-        //        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return File.createTempFile(
                 imageFileName, /* prefix */
                 ".jpg", /* suffix */

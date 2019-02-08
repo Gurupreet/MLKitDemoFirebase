@@ -23,10 +23,10 @@ class MLManager {
     }
 
     fun detectText(visionImage: FirebaseVisionImage, responseListener: MLResponseListener) {
-        val textDetector = FirebaseVision.getInstance().visionTextDetector
-        textDetector.detectInImage(visionImage)
+        val textDetector = FirebaseVision.getInstance().onDeviceTextRecognizer
+        textDetector.processImage(visionImage)
                 .addOnSuccessListener { responseListener.onSuccess(it, "") }
-                .addOnFailureListener{ responseListener.onFailure("") }
+                .addOnFailureListener{ responseListener.onFailure(it.toString()) }
     }
 
     fun detectFace(vistionImage: FirebaseVisionImage, responseListener: MLResponseListener) {
