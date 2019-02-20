@@ -1,17 +1,21 @@
 package com.guru.mlkitdemofirebase.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import com.google.firebase.FirebaseApp
 import com.guru.mlkitdemofirebase.R
+import com.guru.mlkitdemofirebase.data.FirebaseManager
+import com.guru.mlkitdemofirebase.ui.chatbot.ChatBotActivity
 import com.guru.mlkitdemofirebase.utill.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private var TAG = Constants.TAG_LABEL
     private var handler : Handler? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
@@ -19,6 +23,11 @@ class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         handler = Handler()
         loadFragment(TAG)
+        FirebaseManager.get().createUserAuth()
+        chat.setOnClickListener {
+            val intent = Intent(this, ChatBotActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -33,11 +42,6 @@ class MainActivity : AppCompatActivity() {
                 loadFragment(TAG)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_face -> {
-                TAG = Constants.TAG_CUSTOME
-                loadFragment(TAG)
-                return@OnNavigationItemSelectedListener true
-            }
         }
         false
     }
@@ -46,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         val fragment  = when (type) {
             Constants.TAG_LABEL -> MainFragment()
             Constants.TAG_TEST -> TestFragment()
-            Constants.TAG_CUSTOME -> CustomModelsFragment()
             else -> loadFragment(Constants.TAG_LABEL)
         }
         handler?.post {

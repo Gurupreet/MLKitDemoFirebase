@@ -25,10 +25,6 @@
         {
           "client_id": "1075859373955-58ovvbafq6i0d35897u6pbucr6f734i5.apps.googleusercontent.com",
           "client_type": 3
-        },
-        {
-          "client_id": "1075859373955-58ovvbafq6i0d35897u6pbucr6f734i5.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
@@ -69,10 +65,6 @@
             "package_name": "com.guru.mlkitdemofirebase",
             "certificate_hash": "8f9c9b6f5784da0ffb287a1a30c0d14113b3c889"
           }
-        },
-        {
-          "client_id": "1075859373955-58ovvbafq6i0d35897u6pbucr6f734i5.apps.googleusercontent.com",
-          "client_type": 3
         },
         {
           "client_id": "1075859373955-58ovvbafq6i0d35897u6pbucr6f734i5.apps.googleusercontent.com",

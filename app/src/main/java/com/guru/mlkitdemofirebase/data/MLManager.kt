@@ -2,7 +2,7 @@ package com.guru.mlkitdemofirebase.data
 
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
-import com.google.firebase.ml.vision.label.FirebaseVisionLabelDetector
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
 
 class MLManager {
 
@@ -16,8 +16,8 @@ class MLManager {
     }
 
     fun detectLabel(visionImage : FirebaseVisionImage, responseListener: MLResponseListener) {
-        val labelDetector: FirebaseVisionLabelDetector = FirebaseVision.getInstance().visionLabelDetector
-        labelDetector.detectInImage(visionImage)
+        val labelDetector: FirebaseVisionImageLabeler = FirebaseVision.getInstance().onDeviceImageLabeler
+        labelDetector.processImage(visionImage)
                 .addOnSuccessListener { responseListener.onSuccess(it, "") }
                 .addOnFailureListener { responseListener.onFailure("") }
     }

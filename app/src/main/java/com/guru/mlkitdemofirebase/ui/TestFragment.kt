@@ -17,7 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.face.FirebaseVisionFace
-import com.google.firebase.ml.vision.label.FirebaseVisionLabel
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.guru.mlkitdemofirebase.BuildConfig
 import com.guru.mlkitdemofirebase.data.MLManager
@@ -41,14 +41,14 @@ private const val ARG_PARAM2 = "param2"
  */
 class TestFragment : Fragment() {
     companion object {
-        private val REQUEST_PERMISSION_CAMERA = 10
-        private val REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 11
-        private val REQUEST_CODE_IMAGE_SELECTION = 9
-        private val REQUEST_CODE_IMAGE_CAPTURE = 8
+        private const val REQUEST_PERMISSION_CAMERA = 10
+        private const val REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 11
+        private const val REQUEST_CODE_IMAGE_SELECTION = 9
+        private const val REQUEST_CODE_IMAGE_CAPTURE = 8
     }
 
-    var visionImage: FirebaseVisionImage? = null
-    var cameraUri: Uri? = null
+    private var visionImage: FirebaseVisionImage? = null
+    private var cameraUri: Uri? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -64,10 +64,10 @@ class TestFragment : Fragment() {
             result_text?.text = "Running ML..."
             MLManager.get().detectLabel(visionImage!!, object : MLResponseListener {
                 override fun onSuccess(result: Any, type: String) {
-                    val list = result as List<FirebaseVisionLabel>
+                    val list = result as List<FirebaseVisionImageLabel>
                     result_text?.text = ""
                     list.forEach {
-                        result_text.append(it.label + " " + it.confidence + "\n")
+                        result_text.append(it.text + " " + it.confidence + "\n")
                     }
                 }
 
@@ -160,12 +160,13 @@ class TestFragment : Fragment() {
             cameraUri =   FileProvider.getUriForFile(context!!,
                     BuildConfig.APPLICATION_ID + ".provider",
                     createImageFile())
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                    cameraUri)
+            startActivityForResult(cameraIntent, REQUEST_CODE_IMAGE_CAPTURE)
+        } catch (ex: IOException) {
 
-        } catch (ex: IOException) { }
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                cameraUri)
-        startActivityForResult(cameraIntent, REQUEST_CODE_IMAGE_CAPTURE)
+        }
     }
 
     @Throws(IOException::class)

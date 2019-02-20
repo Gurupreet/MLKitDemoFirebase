@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.face.FirebaseVisionFace
-import com.google.firebase.ml.vision.label.FirebaseVisionLabel
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.guru.mlkitdemofirebase.R
 import com.guru.mlkitdemofirebase.data.MLManager
@@ -42,10 +42,10 @@ class HorizontalRecyclerAdapter(val mList: ArrayList<Any>, val mContext: Context
             when (type) {
                 Constants.TAG_LABEL -> MLManager.get().detectLabel(visionImage, object : MLResponseListener {
                     override fun onSuccess(result: Any, type: String) {
-                        val list = result as List<FirebaseVisionLabel>
+                        val list = result as List<FirebaseVisionImageLabel>
                         itemView.recy_title?.text = ""
                         list.forEach {
-                            itemView.recy_title?.append(it.label + " " + it.confidence + "\n")
+                            itemView.recy_title?.append(it.text + " " + it.confidence + "\n")
 
                         }
                     }
