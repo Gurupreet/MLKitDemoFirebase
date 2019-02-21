@@ -2,35 +2,70 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
+    android:padding="@dimen/padding_medium"
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:padding="8dp"
+        android:padding="4dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
         tools:src="@drawable/ic_user_secret" />
+
+    <ImageView
+        android:id="@+id/avatar_right"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="4dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        tools:src="@drawable/ic_bot" />
 
     <TextView
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_small"
         android:layout_toRightOf="@id/avatar"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="8dp"
+        android:gravity="left"
+        android:textStyle="bold"
+        tools:text="@tools:sample/full_names" />
+
+    <TextView
+        android:id="@+id/username_right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/avatar_right"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:gravity="right"
         android:textStyle="bold"
         tools:text="@tools:sample/full_names" />
 
     <TextView
         android:id="@+id/message"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/username"
         android:layout_toRightOf="@id/avatar"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
+        android:gravity="left"
+        android:background="@drawable/bg_grey_chip"
+        android:padding="@dimen/padding_small"
+        android:layout_marginRight="50dp"
+        android:maxLines="3"
+        android:ellipsize="marquee"/>
+
+    <TextView
+        android:id="@+id/message_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username_right"
+        android:layout_toLeftOf="@+id/avatar_right"
+        android:gravity="left"
+        android:background="@drawable/bg_blue_chip"
+        android:padding="@dimen/padding_small"
+        android:layout_marginLeft="50dp"
         android:maxLines="3"
         android:ellipsize="marquee"/>
 

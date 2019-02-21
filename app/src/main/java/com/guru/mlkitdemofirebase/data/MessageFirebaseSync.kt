@@ -1,17 +1,18 @@
-package com.guru.mlkitdemofirebase.ui.chatbot
+package com.guru.mlkitdemofirebase.data
 
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.guru.mlkitdemofirebase.data.model.Chat
+import com.guru.mlkitdemofirebase.utill.FirebaseResponseCompletionHandler
 import com.guru.mlkitdemofirebase.utill.FirebaseObserverType
 
 class MessageFirebaseSync {
     private var databaseRef = FirebaseDatabase.getInstance().reference.child("chat").orderByChild("createdAt")
     private var childEventListener: ChildEventListener? = null
 
-    fun startFutureFirebaseSync(completionHandler: FirebaseResponseCompletionHandler) {
+    fun startMessageFirebaseSync(completionHandler: FirebaseResponseCompletionHandler) {
         childEventListener = object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, p1: String?) {
                 try {

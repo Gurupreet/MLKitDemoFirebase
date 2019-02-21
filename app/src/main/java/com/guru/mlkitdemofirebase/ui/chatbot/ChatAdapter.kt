@@ -1,5 +1,6 @@
 package com.guru.mlkitdemofirebase.ui.chatbot
 
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -25,34 +26,41 @@ class ChatAdapter: RecyclerView.Adapter<ChatAdapter.ChatVH>() {
        holder.bind(mList[position])
     }
 
-    fun setData(list: MutableList<Chat>) {
-        mList = list
-        notifyDataSetChanged()
-    }
-
     fun addItem(chat: Chat) {
         mList.add(chat)
         notifyItemInserted(mList.size)
     }
 
-    fun clearData() {
-
-    }
-
-
     class ChatVH(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         fun bind(chat: Chat) {
-            itemView.message.text = chat.message
-            itemView.username.text = "@${chat.username}"
-            if (chat.username != "bot") {
+            if (chat.username == "Bot") {
+                itemView.message.text = chat.message
+                itemView.username.text = "@${chat.username}"
                 Glide.with(itemView.context)
-                        .load(R.drawable.ic_user_secret)
+                        .load(R.drawable.ic_bot)
                         .into(itemView.avatar)
+
+                itemView.message.visibility = View.VISIBLE
+                itemView.username.visibility = View.VISIBLE
+                itemView.avatar.visibility = View.VISIBLE
+                itemView.message_right.visibility = View.GONE
+                itemView.username_right.visibility = View.GONE
+                itemView.avatar_right.visibility = View.GONE
             } else {
+                itemView.message_right.text = chat.message
+                itemView.username_right.text = "@${chat.username}"
                 Glide.with(itemView.context)
-                        .load(R.drawable.ic_robot_solid)
-                        .into(itemView.avatar)
+                        .load(R.drawable.ic_person_outline_black_24dp)
+                        .into(itemView.avatar_right)
+
+                itemView.message.visibility = View.GONE
+                itemView.username.visibility = View.GONE
+                itemView.avatar.visibility = View.GONE
+                itemView.message_right.visibility = View.VISIBLE
+                itemView.username_right.visibility = View.VISIBLE
+                itemView.avatar_right.visibility = View.VISIBLE
+
             }
         }
     }

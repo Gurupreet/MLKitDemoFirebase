@@ -25,22 +25,18 @@ class FirebaseManager {
         }
     }
 
-    fun sendMessage(message: String) {
+    fun sendMessage(message: String, username: String) {
         val ref = databaseReferece.child("chat")
         val key = ref.push().key ?: ""
         val map = HashMap<String, Any>()
 
         map["message"] = message
-        map["createdAt"] = -System.currentTimeMillis()
-        map["username"] = "User"
+        map["createdAt"] = System.currentTimeMillis()
+        map["username"] = username
         map["avatarUrl"] = ""
         map["userId"] = mAuth.uid ?: ""
 
-        ref.child(key).setValue(map).addOnSuccessListener {
-
-        }.addOnFailureListener {
-            it.printStackTrace()
-        }
+        ref.child(key).setValue(map)
     }
 
 

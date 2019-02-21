@@ -6,27 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".ui.chatbot.ChatBotActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_height="?attr/actionBarSize">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            app:titleTextColor="@color/black"
+            app:title="ChatBot"/>
+    </android.support.design.widget.AppBarLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/chat_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/edittext" >
+        android:layout_above="@id/edittext"
+        android:layout_below="@id/appbar">
     </android.support.v7.widget.RecyclerView>
+
+    <ImageView
+        android:id="@+id/mic"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_mic_black_24dp" />
+
     <EditText
         android:id="@+id/edittext"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
+        android:layout_margin="@dimen/margin_small"
         android:layout_toLeftOf="@+id/send"
+        android:layout_toRightOf="@id/mic"
         android:layout_alignParentBottom="true"
         android:padding="8dp"
         android:inputType="textCapSentences"
-        android:background="#eee"
+        android:background="@drawable/bg_grey_chip"
         android:imeOptions="actionDone" />
     <ImageView
         android:id="@+id/send"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:src="@drawable/ic_home_black_24dp" />
+        android:src="@drawable/ic_send_black_24dp" />
 </RelativeLayout>
