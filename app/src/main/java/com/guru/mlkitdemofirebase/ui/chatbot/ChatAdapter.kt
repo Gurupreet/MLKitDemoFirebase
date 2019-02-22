@@ -28,7 +28,14 @@ class ChatAdapter: RecyclerView.Adapter<ChatAdapter.ChatVH>() {
 
     fun addItem(chat: Chat) {
         mList.add(chat)
-        notifyItemInserted(mList.size)
+        notifyItemInserted(mList.size-1)
+    }
+
+    fun deleteItem(index: Int) {
+        if (index < mList.size) {
+            mList.removeAt(index)
+            notifyItemRemoved(index)
+        }
     }
 
     class ChatVH(itemView: View): RecyclerView.ViewHolder(itemView) {

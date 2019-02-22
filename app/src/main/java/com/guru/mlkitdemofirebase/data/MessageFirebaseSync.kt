@@ -9,7 +9,7 @@ import com.guru.mlkitdemofirebase.utill.FirebaseResponseCompletionHandler
 import com.guru.mlkitdemofirebase.utill.FirebaseObserverType
 
 class MessageFirebaseSync {
-    private var databaseRef = FirebaseDatabase.getInstance().reference.child("chat").orderByChild("createdAt")
+    private var databaseRef = FirebaseDatabase.getInstance().reference.child("chat").child(FirebaseManager.mAuth.uid!!).orderByChild("createdAt")
     private var childEventListener: ChildEventListener? = null
 
     fun startMessageFirebaseSync(completionHandler: FirebaseResponseCompletionHandler) {

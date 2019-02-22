@@ -3,8 +3,11 @@ package com.guru.mlkitdemofirebase.data
 import ai.api.AIDataService
 import ai.api.android.AIConfiguration
 import ai.api.android.AIService
+import ai.api.model.AIRequest
+import ai.api.model.AIResponse
 import ai.api.ui.AIDialog
 import android.content.Context
+import kotlinx.coroutines.*
 
 
 class ChatBotManager {

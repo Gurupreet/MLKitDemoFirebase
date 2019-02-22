@@ -19,18 +19,21 @@ import ai.api.ui.AIDialog
 import android.Manifest
 import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
+import android.view.KeyEvent
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
+import android.widget.Toast
 import com.guru.mlkitdemofirebase.data.ChatBotManager
 import com.guru.mlkitdemofirebase.data.MessageFirebaseSync
 import com.guru.mlkitdemofirebase.utill.FirebaseResponseCompletionHandler
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 
-
-
-
-class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener {
+class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener, CoroutineScope {
 
     private lateinit var chatAdapter: ChatAdapter
     private val list = mutableListOf<Chat>()
@@ -38,13 +41,18 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener {
 
     private lateinit var aiservice: AIService
     private lateinit var aiRequest: AIRequest
-    private lateinit var aiDataService: AIDataService
+
+    private lateinit var job: Job
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_bot)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        job = Job()
         setupUI()
         setupApiAi()
         setupRecyclerview()
@@ -55,6 +63,7 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener {
         messageFirebaseSync?.stopListener()
         messageFirebaseSync = null
         aiservice?.cancel()
+        job?.cancel()
         super.onDestroy()
     }
 
@@ -80,6 +89,15 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener {
         send.setOnClickListener {
             sendMessage()
         }
+        edittext.setOnEditorActionListener(object: TextView.OnEditorActionListener {
+            override fun onEditorAction(p0: TextView?, actionId: Int, p2: KeyEvent?): Boolean {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    sendMessage()
+                    return true
+                }
+                return false
+            }
+        })
         mic.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
                 getAIMicDailog()
@@ -91,7 +109,6 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener {
 
     private fun setupApiAi() {
         aiservice = ChatBotManager.get().getAIService(this)
-        aiDataService = ChatBotManager.aiDataService
         aiRequest = AIRequest()
     }
 
@@ -109,23 +126,11 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener {
                 override fun onSuccess(result: Any?, observerType: FirebaseObserverType) {
                     var chat = result as Chat
                     when (observerType) {
+
                         FirebaseObserverType.CHILD_ADDED -> {
                             list.add(chat)
                             chatAdapter?.addItem(chat)
                             chat_recycler_view?.smoothScrollToPosition(list.size)
-                        }
-
-                        FirebaseObserverType.CHILD_CHANGED -> {
-                            val iterator :MutableListIterator<Chat> = list.listIterator()
-                            var index = 0;
-                            while (iterator.hasNext()) {
-                                if (iterator.next().chatId == chat.chatId) {
-                                    iterator.set(chat)
-                                 //   futurAdapter.notifyItemChanged(index)
-                                    break
-                                }
-                                index++
-                            }
                         }
 
                         FirebaseObserverType.CHILD_REMOVED -> {
@@ -134,18 +139,17 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener {
                             while (iterator.hasNext()) {
                                 if (iterator.next().chatId == chat.chatId) {
                                     iterator.remove()
-
+                                    chatAdapter?.deleteItem(index)
                                     break
                                 }
                                 index++
                             }
                         }
                     }
-
                 }
 
                 override fun onFailure(result: String) {
-
+                    Toast.makeText(this@ChatBotActivity, "Failed to load chat", Toast.LENGTH_SHORT)
                 }
             })
 
@@ -155,14 +159,18 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener {
     private fun sendMessage() {
         if (edittext.text.isNotBlank()) {
             FirebaseManager.get().sendMessage(edittext.text.toString(), "User")
-            aiRequest.setQuery(edittext.text.toString())
-            GlobalScope.launch {
-                val response = aiDataService.request(aiRequest)
-                sendMessage(response.result?.fulfillment?.speech!!, "Bot")
-            }
+            queryAPiAI()
             edittext.text.clear()
         } else {
 
+        }
+    }
+
+    private fun queryAPiAI() {
+        aiRequest.setQuery(edittext.text.toString())
+        launch {
+            val response = withContext(Dispatchers.Default) { ChatBotManager.aiDataService.request(aiRequest) }
+            sendMessage(response.result?.fulfillment?.speech!!, "Bot")
         }
     }
 
@@ -179,11 +187,16 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener {
 
     override fun onError(error: AIError?) {}
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.chatbot_menu, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId  == android.R.id.home) {
-            finish()
-            return true;
-        }
+        when (item?.itemId) {
+             android.R.id.home -> finish()
+             R.id.delete -> FirebaseManager.get().deleteAllChat()
+            }
         return super.onOptionsItemSelected(item)
     }
 }
