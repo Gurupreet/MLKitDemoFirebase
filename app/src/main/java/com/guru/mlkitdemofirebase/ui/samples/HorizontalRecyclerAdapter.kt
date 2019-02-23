@@ -1,4 +1,4 @@
-package com.guru.mlkitdemofirebase.ui
+package com.guru.mlkitdemofirebase.ui.samples
 
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
@@ -16,7 +16,6 @@ import com.guru.mlkitdemofirebase.data.MLResponseListener
 import com.guru.mlkitdemofirebase.data.model.Item
 import com.guru.mlkitdemofirebase.utill.Constants
 import kotlinx.android.synthetic.main.row_image_layout.view.*
-import java.util.logging.Logger
 
 class HorizontalRecyclerAdapter(val mList: ArrayList<Any>, val mContext: Context?, var type : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -33,7 +32,6 @@ class HorizontalRecyclerAdapter(val mList: ArrayList<Any>, val mContext: Context
 
 
     class ImageHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val LOG = Logger.getLogger(this.javaClass.name)
         // Holds the TextView that will add each animal to
         fun bind(any: Any, type: String) {
             val item = any as Item

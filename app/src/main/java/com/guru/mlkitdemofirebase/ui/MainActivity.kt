@@ -1,6 +1,5 @@
 package com.guru.mlkitdemofirebase.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomNavigationView
@@ -9,7 +8,8 @@ import android.widget.Toast
 import com.google.firebase.FirebaseApp
 import com.guru.mlkitdemofirebase.R
 import com.guru.mlkitdemofirebase.data.FirebaseManager
-import com.guru.mlkitdemofirebase.ui.chatbot.ChatBotActivity
+import com.guru.mlkitdemofirebase.ui.samples.MainFragment
+import com.guru.mlkitdemofirebase.ui.test.TestFragment
 import com.guru.mlkitdemofirebase.utill.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.IllegalArgumentException

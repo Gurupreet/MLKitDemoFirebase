@@ -1,4 +1,4 @@
-package com.guru.mlkitdemofirebase.ui
+package com.guru.mlkitdemofirebase.ui.test
 
 
 import android.app.Activity
