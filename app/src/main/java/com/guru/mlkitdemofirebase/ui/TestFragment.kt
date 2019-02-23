@@ -102,8 +102,12 @@ class TestFragment : Fragment() {
             override fun onSuccess(result: Any, type: String) {
                 val item = result as FirebaseVisionText
                 result_text?.text = ""
-                item.textBlocks.forEach {
-                    result_text?.append(it.text + " ")
+                if (!item.textBlocks.isEmpty()) {
+                    item.textBlocks.forEach {
+                        result_text?.append(it.text + " ")
+                    }
+                } else {
+                    result_text?.text = "No text found"
                 }
             }
 
