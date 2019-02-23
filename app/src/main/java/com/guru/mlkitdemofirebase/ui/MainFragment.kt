@@ -1,6 +1,7 @@
 package com.guru.mlkitdemofirebase.ui
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,8 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.guru.mlkitdemofirebase.R
+import com.guru.mlkitdemofirebase.data.model.Item
+import com.guru.mlkitdemofirebase.ui.chatbot.ChatBotActivity
 import com.guru.mlkitdemofirebase.utill.Constants
 
 
@@ -33,6 +36,11 @@ class MainFragment : Fragment() {
         adapterFace.notifyDataSetChanged()
         adapterText.notifyDataSetChanged()
         adapterLabel.notifyDataSetChanged()
+        chat.setOnClickListener {
+            val intent = Intent(context, ChatBotActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 
@@ -53,14 +61,8 @@ class MainFragment : Fragment() {
         texts.add(Item("ML running .. ", R.drawable.q6))
 
         faces.add(Item("ML running .. ", R.drawable.food))
-        faces.add(Item("ML running .. ", R.drawable.running))
         faces.add(Item("ML running .. ", R.drawable.l4))
         faces.add(Item("ML running .. ", R.drawable.l5))
-
-
-
-
-
 
         val lm : RecyclerView.LayoutManager  = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         label_recyclerview?.layoutManager = lm
@@ -76,10 +78,9 @@ class MainFragment : Fragment() {
         face_recyclerview?.layoutManager = lm2
         adapterFace = HorizontalRecyclerAdapter(faces, context, Constants.TAG_FACE)
         face_recyclerview?.adapter = adapterFace
-
     }
 
 
-    data class Item(var text: String, var id: Int)
+
 
 }

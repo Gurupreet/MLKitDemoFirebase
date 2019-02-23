@@ -11,6 +11,7 @@ import com.guru.mlkitdemofirebase.utill.FirebaseObserverType
 import kotlinx.android.synthetic.main.activity_chat_bot.*
 
 import ai.api.AIDataService
+import ai.api.AIServiceException
 import ai.api.model.AIError
 import ai.api.model.AIResponse
 
@@ -41,7 +42,6 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener, Coroutin
 
     private lateinit var aiservice: AIService
     private lateinit var aiRequest: AIRequest
-
     private lateinit var job: Job
 
     override val coroutineContext: CoroutineContext
@@ -86,9 +86,8 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener, Coroutin
     }
 
     private fun setupUI() {
-        send.setOnClickListener {
-            sendMessage()
-        }
+        send.setOnClickListener { sendMessage() }
+
         edittext.setOnEditorActionListener(object: TextView.OnEditorActionListener {
             override fun onEditorAction(p0: TextView?, actionId: Int, p2: KeyEvent?): Boolean {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -98,9 +97,10 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener, Coroutin
                 return false
             }
         })
+
         mic.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-                getAIMicDailog()
+                getMicDailog()
             } else {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 1);
             }
@@ -112,14 +112,14 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener, Coroutin
         aiRequest = AIRequest()
     }
 
-    private fun getAIMicDailog() {
+    private fun getMicDailog() {
         val aiDialog = ChatBotManager.get().getAIDialog(this)
         aiDialog.setResultsListener(this)
         aiDialog.showAndListen()
     }
 
     private fun startFirebaseSync() {
-        if (messageFirebaseSync == null) {
+        if (messageFirebaseSync == null && FirebaseManager.mAuth.currentUser != null) {
             messageFirebaseSync = MessageFirebaseSync()
             list.clear()
             messageFirebaseSync?.startMessageFirebaseSync(object : FirebaseResponseCompletionHandler {
@@ -149,7 +149,7 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener, Coroutin
                 }
 
                 override fun onFailure(result: String) {
-                    Toast.makeText(this@ChatBotActivity, "Failed to load chat", Toast.LENGTH_SHORT)
+                    Toast.makeText(this@ChatBotActivity, "Failed to load chat", Toast.LENGTH_SHORT).show()
                 }
             })
 
@@ -162,30 +162,20 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener, Coroutin
             queryAPiAI()
             edittext.text.clear()
         } else {
-
+            Toast.makeText(this, "Enter a valid text.", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun sendMessage(message: String, user: String) =
+            FirebaseManager.get().sendMessage(message, user)
 
     private fun queryAPiAI() {
         aiRequest.setQuery(edittext.text.toString())
         launch {
-            val response = withContext(Dispatchers.Default) { ChatBotManager.aiDataService.request(aiRequest) }
+            val response = ChatBotManager.get().callApiAi(aiRequest)
             sendMessage(response.result?.fulfillment?.speech!!, "Bot")
         }
     }
-
-    private fun sendMessage(message: String, user: String) {
-        FirebaseManager.get().sendMessage(message, user)
-    }
-
-    override fun onCancelled() {}
-
-    override fun onResult(response: AIResponse?) {
-        sendMessage(response?.result?.resolvedQuery!!, "User")
-        sendMessage(response?.result?.fulfillment?.speech!!, "Bot")
-    }
-
-    override fun onError(error: AIError?) {}
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.chatbot_menu, menu)
@@ -194,9 +184,22 @@ class ChatBotActivity : AppCompatActivity(), AIDialog.AIDialogListener, Coroutin
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-             android.R.id.home -> finish()
-             R.id.delete -> FirebaseManager.get().deleteAllChat()
-            }
+            android.R.id.home -> finish()
+            R.id.delete -> FirebaseManager.get().deleteAllChat()
+        }
         return super.onOptionsItemSelected(item)
     }
+
+    //API AI Dialog callbacks
+    override fun onResult(response: AIResponse?) {
+        sendMessage(response?.result?.resolvedQuery!!, "User")
+        sendMessage(response?.result?.fulfillment?.speech!!, "Bot")
+    }
+
+    override fun onCancelled() {}
+    override fun onError(error: AIError?) {}
+
+
+
+
 }

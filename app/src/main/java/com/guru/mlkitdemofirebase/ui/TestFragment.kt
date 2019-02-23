@@ -49,6 +49,7 @@ class TestFragment : Fragment() {
 
     private var visionImage: FirebaseVisionImage? = null
     private var cameraUri: Uri? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -58,63 +59,9 @@ class TestFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         visionImage = FirebaseVisionImage.fromBitmap((test_image?.drawable as BitmapDrawable).bitmap)
-
-        test_label.setOnClickListener {
-            result_text?.visibility = View.VISIBLE
-            result_text?.text = "Running ML..."
-            MLManager.get().detectLabel(visionImage!!, object : MLResponseListener {
-                override fun onSuccess(result: Any, type: String) {
-                    val list = result as List<FirebaseVisionImageLabel>
-                    result_text?.text = ""
-                    list.forEach {
-                        result_text.append(it.text + " " + it.confidence + "\n")
-                    }
-                }
-
-                override fun onFailure(error: String) {
-                    result_text.append("Failed to detect anything")
-                }
-            })
-        }
-
-        test_text.setOnClickListener {
-            result_text?.visibility = View.VISIBLE
-            result_text?.text = "Running ML..."
-            MLManager.get().detectText(visionImage!!, object : MLResponseListener {
-                override fun onSuccess(result: Any, type: String) {
-                    val item = result as FirebaseVisionText
-                    result_text?.text = ""
-                    item.textBlocks.forEach {
-                        result_text?.append(it.text + " ")
-                    }
-                }
-
-                override fun onFailure(error: String) {
-                    result_text.text = "Failed to detect anything"
-                }
-            })
-        }
-
-        test_face.setOnClickListener {
-            result_text?.visibility = View.VISIBLE
-            result_text?.text = "Running ML..."
-            MLManager.get().detectFace(visionImage!!, object : MLResponseListener {
-                override fun onSuccess(result: Any, type: String) {
-                    val list = result as List<FirebaseVisionFace>
-                    result_text.text = ""
-                    if (list.isEmpty()) {
-                        result_text.text = "No face detected"
-                    }
-                    list.forEach {
-                        result_text?.append("Person smiling : " + it.smilingProbability + "\n")
-                    }
-                }
-
-                override fun onFailure(error: String) {
-                    result_text.text = "Failed to detect anything"
-                }
-            })
-        }
+        test_label.setOnClickListener { runLabelDetection() }
+        test_text.setOnClickListener { runTextDetection() }
+        test_face.setOnClickListener { runFaceDetections() }
 
         upload.setOnClickListener {
             result_text?.text = ""
@@ -128,6 +75,65 @@ class TestFragment : Fragment() {
             checkCameraPermissionAndOpenCamera()
         }
 
+    }
+
+    private fun runLabelDetection() {
+        result_text?.visibility = View.VISIBLE
+        result_text?.text = "Running ML..."
+        MLManager.get().detectLabel(visionImage!!, object : MLResponseListener {
+            override fun onSuccess(result: Any, type: String) {
+                val list = result as List<FirebaseVisionImageLabel>
+                result_text?.text = ""
+                list.forEach {
+                    result_text.append(it.text + " " + it.confidence + "\n")
+                }
+            }
+
+            override fun onFailure(error: String) {
+                result_text.append("Failed to detect anything")
+            }
+        })
+    }
+
+    private fun runTextDetection() {
+        result_text?.visibility = View.VISIBLE
+        result_text?.text = "Running ML..."
+        MLManager.get().detectText(visionImage!!, object : MLResponseListener {
+            override fun onSuccess(result: Any, type: String) {
+                val item = result as FirebaseVisionText
+                result_text?.text = ""
+                item.textBlocks.forEach {
+                    result_text?.append(it.text + " ")
+                }
+            }
+
+            override fun onFailure(error: String) {
+                result_text.text = "Failed to detect anything"
+            }
+        })
+    }
+
+    private fun runFaceDetections() {
+        result_text?.visibility = View.VISIBLE
+        result_text?.text = "Running ML..."
+        MLManager.get().detectFace(visionImage!!, object : MLResponseListener {
+            override fun onSuccess(result: Any, type: String) {
+                val list = result as List<FirebaseVisionFace>
+                result_text.text = ""
+                if (list.isEmpty()) {
+                    result_text.text = "No face detected"
+                }
+                list.forEach {
+                    result_text?.append("Person smiling : " + it.smilingProbability + "\n"+
+                                        "Left eye open : " + it.leftEyeOpenProbability + "\n"+
+                                        "Right eye open : " + it.rightEyeOpenProbability + "\n")
+                }
+            }
+
+            override fun onFailure(error: String) {
+                result_text.text = "Failed to detect anything"
+            }
+        })
     }
 
     private fun checkPermissionAndOpenGallery() {

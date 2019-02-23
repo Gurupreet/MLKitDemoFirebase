@@ -34,7 +34,7 @@
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-            android:value="text,face,label,ocr, mobilenet_v1" />
+            android:value="text,face,label,ocr" />
 
         <activity
             android:name=".ui.MainActivity"

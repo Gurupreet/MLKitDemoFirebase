@@ -3,55 +3,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.MainFragment">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Label ML Demo"
-            android:textStyle="bold"
-            android:padding="10dp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/label_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="320dp">
-        </android.support.v7.widget.RecyclerView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Label ML Demo"
+                android:textStyle="bold"
+                android:padding="10dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Text recoginition ML Demo"
-            android:textStyle="bold"
-            android:padding="10dp"
-            />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/label_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="350dp">
+            </android.support.v7.widget.RecyclerView>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/text_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="320dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Text recoginition ML Demo"
+                android:textStyle="bold"
+                android:padding="10dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Face recoginition ML Demo"
-            android:textStyle="bold"
-            android:padding="10dp"
-            />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/text_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/face_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="320dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Face recoginition ML Demo"
+                android:textStyle="bold"
+                android:padding="10dp" />
 
-    </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/face_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_marginBottom="40dp"/>
+
+        </LinearLayout>
+
     </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:fabSize="normal"
+        android:visibility="visible"
+        android:layout_gravity="right|bottom"
+        android:layout_above="@id/navigation"
+        android:src="@drawable/ic_bot"
+        android:tint="@color/white" />
+
 </FrameLayout>

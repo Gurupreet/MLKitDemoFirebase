@@ -13,18 +13,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/navigation" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/chat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        app:fabSize="normal"
-        android:visibility="visible"
-        android:layout_alignParentRight="true"
-        android:layout_above="@id/navigation"
-        android:src="@drawable/ic_bot"
-        android:tint="@color/white" />
-
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"

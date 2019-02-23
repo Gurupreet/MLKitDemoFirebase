@@ -13,6 +13,7 @@ import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.guru.mlkitdemofirebase.R
 import com.guru.mlkitdemofirebase.data.MLManager
 import com.guru.mlkitdemofirebase.data.MLResponseListener
+import com.guru.mlkitdemofirebase.data.model.Item
 import com.guru.mlkitdemofirebase.utill.Constants
 import kotlinx.android.synthetic.main.row_image_layout.view.*
 import java.util.logging.Logger
@@ -35,7 +36,7 @@ class HorizontalRecyclerAdapter(val mList: ArrayList<Any>, val mContext: Context
         val LOG = Logger.getLogger(this.javaClass.name)
         // Holds the TextView that will add each animal to
         fun bind(any: Any, type: String) {
-            val item = any as MainFragment.Item
+            val item = any as Item
             itemView.recy_title?.text = item.text
             itemView.recy_image?.setImageResource(item.id)
             val visionImage: FirebaseVisionImage = FirebaseVisionImage.fromBitmap((itemView.recy_image?.drawable as BitmapDrawable).bitmap)
@@ -55,6 +56,7 @@ class HorizontalRecyclerAdapter(val mList: ArrayList<Any>, val mContext: Context
 
                     }
                 })
+
                 Constants.TAG_TEXT -> MLManager.get().detectText(visionImage, object : MLResponseListener {
                     override fun onSuccess(result: Any, type: String) {
                         val item = result as FirebaseVisionText
@@ -72,6 +74,7 @@ class HorizontalRecyclerAdapter(val mList: ArrayList<Any>, val mContext: Context
                         itemView.recy_title?.text = error
                     }
                 })
+
                 Constants.TAG_FACE -> MLManager.get().detectFace(visionImage, object : MLResponseListener {
                     override fun onSuccess(result: Any, type: String) {
                         val list = result as List<FirebaseVisionFace>
@@ -81,11 +84,14 @@ class HorizontalRecyclerAdapter(val mList: ArrayList<Any>, val mContext: Context
 
                         }
                         list.forEach {
-                            itemView.recy_title?.append("Person smiling : "+it.smilingProbability+"\n")
+                            itemView.recy_title?.append("Person smiling : " + it.smilingProbability + "\n"+
+                                                        "Left eye open : " + it.leftEyeOpenProbability + "\n"+
+                                                         "Right eye open : " + it.rightEyeOpenProbability + "\n")
                         }
                     }
 
                     override fun onFailure(error: String) {
+                        itemView.recy_title?.text = "No face detected"
                     }
                 })
             }

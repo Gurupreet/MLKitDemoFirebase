@@ -2,7 +2,10 @@ package com.guru.mlkitdemofirebase.data
 
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MLManager {
 
@@ -13,6 +16,10 @@ class MLManager {
                     INSTANCE
                             ?: MLManager()
                 }
+        private val faceOptions = FirebaseVisionFaceDetectorOptions.Builder()
+                .setPerformanceMode(FirebaseVisionFaceDetectorOptions.ACCURATE)
+                .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
+                .build()
     }
 
     fun detectLabel(visionImage : FirebaseVisionImage, responseListener: MLResponseListener) {
@@ -30,7 +37,7 @@ class MLManager {
     }
 
     fun detectFace(vistionImage: FirebaseVisionImage, responseListener: MLResponseListener) {
-        val faceDetector = FirebaseVision.getInstance().visionFaceDetector
+        val faceDetector = FirebaseVision.getInstance().getVisionFaceDetector(faceOptions)
         faceDetector.detectInImage(vistionImage)
                 .addOnSuccessListener { responseListener.onSuccess(it, "") }
                 .addOnFailureListener { responseListener.onFailure("") }

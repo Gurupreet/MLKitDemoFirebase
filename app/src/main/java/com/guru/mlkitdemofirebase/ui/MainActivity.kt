@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import com.google.firebase.FirebaseApp
 import com.guru.mlkitdemofirebase.R
 import com.guru.mlkitdemofirebase.data.FirebaseManager
 import com.guru.mlkitdemofirebase.ui.chatbot.ChatBotActivity
 import com.guru.mlkitdemofirebase.utill.Constants
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.IllegalArgumentException
 
 class MainActivity : AppCompatActivity() {
     private var TAG = Constants.TAG_LABEL
@@ -24,10 +26,6 @@ class MainActivity : AppCompatActivity() {
         handler = Handler()
         loadFragment(TAG)
         FirebaseManager.get().createUserAuth()
-        chat.setOnClickListener {
-            val intent = Intent(this, ChatBotActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -53,9 +51,13 @@ class MainActivity : AppCompatActivity() {
             else -> loadFragment(Constants.TAG_LABEL)
         }
         handler?.post {
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.containerView, fragment as android.support.v4.app.Fragment)
-            fragmentTransaction.commit()
+            try {
+                val fragmentTransaction = supportFragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.containerView, fragment as android.support.v4.app.Fragment)
+                fragmentTransaction.commit()
+            } catch (e: IllegalArgumentException) {
+                Toast.makeText(this, "Error loading fragments", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

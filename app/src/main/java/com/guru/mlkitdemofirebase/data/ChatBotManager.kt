@@ -7,6 +7,7 @@ import ai.api.model.AIRequest
 import ai.api.model.AIResponse
 import ai.api.ui.AIDialog
 import android.content.Context
+import android.drm.DrmInfoStatus
 import kotlinx.coroutines.*
 
 
@@ -33,6 +34,12 @@ class ChatBotManager {
 
     fun getAIDialog(context: Context): AIDialog {
         return AIDialog(context, config)
+    }
+
+    suspend fun callApiAi(request: AIRequest): AIResponse {
+        return withContext(Dispatchers.Default) {
+            return@withContext aiDataService.request(request)
+        }
     }
 
 }
