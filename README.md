@@ -2,10 +2,10 @@
 # All in KOTLIN.
 
 ML KIT Showcase
-_-FACE detection on images
-_-TEXT detection on images
-_-LABEL(Object) detection on images
-_TODO:TensorFlow custom model training and implementations
+-FACE detection on images
+-TEXT detection on images
+-LABEL(Object) detection on images
+TODO:TensorFlow custom model training and implementations
 
 CHATBOT
 -Basic smart conversation & Training
