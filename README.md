@@ -12,4 +12,11 @@ CHATBOT
 -Firebase Realtime Chat
 -Voice Dialog implementation with chatbot.
 
+Here is some samples with Detections and Probability
+
+<img src="https://i.imgur.com/uaUZuki.png" width="200"  />
+
+<img src="https://i.imgur.com/II845JR.png"  width="200"/>
+
+<img src="https://i.imgur.com/3n647AC.png" width="200"/>
 
