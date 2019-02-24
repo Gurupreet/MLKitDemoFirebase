@@ -2,15 +2,15 @@
 # All in KOTLIN.
 
 ML KIT Showcase
--FACE detection on images
--TEXT detection on images
--LABEL(Object) detection on images
-TODO:TensorFlow custom model training and implementations
+* FACE detection on images
+* TEXT detection on images
+* LABEL(Object) detection on images
+* TODO:TensorFlow custom model training and implementations
 
 CHATBOT
--Basic smart conversation & Training
--Firebase Realtime Chat
--Voice Dialog implementation with chatbot.
+* Basic smart conversation & Training
+* Firebase Realtime Chat
+* Voice Dialog implementation with chatbot.
 
 Here is some samples with Detections and Probability
 
